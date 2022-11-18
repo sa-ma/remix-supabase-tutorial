@@ -5,23 +5,24 @@
   "license": "",
   "sideEffects": false,
   "scripts": {
-    "build": "run-p build:*",
+    "build": "run-s build:*",
     "build:css": "npm run generate:css -- --minify",
-    "build:remix": "cross-env NODE_ENV=production remix build",
+    "build:remix": "remix build",
     "dev": "run-p dev:*",
     "dev:css": "npm run generate:css -- --watch",
-    "dev:remix": "cross-env NODE_ENV=development remix dev",
+    "dev:remix": "remix dev",
     "generate:css": "npx tailwindcss -o ./app/tailwind.css",
     "postinstall": "remix setup node",
-    "start": "cross-env NODE_ENV=production remix-serve build"
+    "start": "remix-serve build"
   },
   "dependencies": {
     "@remix-run/react": "^1.2.3",
     "@remix-run/serve": "^1.2.3",
-    "@supabase/supabase-js": "^1.31.1",
+    "@supabase/supabase-js": "^1.35.7",
     "cross-env": "^7.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^6.4.3",
     "remix": "^1.2.3"
   },
   "devDependencies": {
@@ -29,7 +30,7 @@
     "@remix-run/eslint-config": "^1.2.3",
     "eslint": "^8.9.0",
     "npm-run-all": "^4.1.5",
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.2.4"
   },
   "engines": {
     "node": ">=14"
