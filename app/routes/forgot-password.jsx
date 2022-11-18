@@ -15,6 +15,7 @@ export async function action({ request }) {
 
     // return data if we have errors
     if (Object.keys(errors).length) {
+      errors.user = "Error";
       return json({ errors }, { status: 422 });
     }
 
@@ -22,7 +23,8 @@ export async function action({ request }) {
   } catch (error) {
     console.log("error", error);
     errors.server = error?.message || error;
-    return json({ errors }, { status: 500 });
+    errors.user = "Error";
+    return json({ errors });
   }
 }
 
@@ -35,18 +37,18 @@ const ForgotPassword = () => {
         Forgot <strong className="font-bold">Password</strong>
       </h2>
       <Form method="post" className="my-3">
-        {data?.user && (
+        {transition.state !== "idle" ? (
           <div
             className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
             role="alert"
           >
             <strong className="font-bold">Congrats! </strong>
             <span className="block sm:inline">
-              Your account has been registered. Please go to your email for
+              Your password link has been sent. Please go to your email for
               confirmation instructions.
             </span>
           </div>
-        )}
+        ) : null}
 
         <div className="mb-2">
           <label

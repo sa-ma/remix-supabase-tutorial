@@ -4,6 +4,7 @@ import Layout from "~/components/layout";
 
 export async function action({ request }) {
   const errors = {};
+
   try {
     const form = await request.formData();
     const firstName = form.get("firstName");
@@ -33,6 +34,7 @@ export async function action({ request }) {
 
     // return data if we have errors
     if (Object.keys(errors).length) {
+      errors.user = "Error";
       return json({ errors }, { status: 422 });
     }
 
@@ -44,36 +46,41 @@ export async function action({ request }) {
       phoneNumber,
     });
 
-    if (user?.status === 201) {
+    if (user?.status === 200) {
       return json({ user }, { status: 200 });
     }
+
     throw error;
   } catch (error) {
     console.log("error", error);
     errors.server = error?.message || error;
-    return json({ errors }, { status: 500 });
+
+    return json({ errors });
   }
 }
-
+//, { status: 500 }
 const SignUp = () => {
   const data = useActionData();
+  console.log(data);
   const transition = useTransition();
   return (
     <Layout>
       <h2 className="text-3xl font-light">Sign Up</h2>
       <Form method="post" className="my-3">
-        {data?.user && (
-          <div
-            className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <strong className="font-bold">Congrats! </strong>
-            <span className="block sm:inline">
-              Your account has been registered. Please go to your email for
-              confirmation instructions.
-            </span>
-          </div>
-        )}
+        {data?.errors?.user
+          ? null
+          : data && (
+              <div
+                className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                role="alert"
+              >
+                <strong className="font-bold">Congrats! </strong>
+                <span className="block sm:inline">
+                  Your account has been registered. Please go to your email for
+                  confirmation instructions.
+                </span>
+              </div>
+            )}
         <div className="mb-2">
           <label
             className="text-gray-700 text-sm font-bold mb-2"
